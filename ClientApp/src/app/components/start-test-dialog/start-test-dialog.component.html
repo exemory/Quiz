@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>{{test.name}}</h2>
+<div mat-dialog-content>
+  <p class="test-description">{{test.description}}</p>
+  <mat-checkbox [(ngModel)]="agreeToStart">I agree to start</mat-checkbox>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button [mat-dialog-close]="undefined">Cancel</button>
+  <button [disabled]="!agreeToStart" mat-raised-button color="accent" (click)="onProceedClick()">
+    Proceed
+  </button>
+</div>

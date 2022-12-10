@@ -1,4 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-supporting-text-color: #fff;
+
+  &.success {
+    --mdc-snackbar-container-color: #388e3c;
+  }
+
+  &.error {
+    --mdc-snackbar-container-color: #d32f2f;
+  }
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 3px;
+  margin: -3px;
+  color: #2175ff;
+  cursor: pointer;
+  font-size: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,18 @@
+<div class="wrapper">
+  <div *ngIf="loading && !loadingError" class="loading-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!loading && !loadingError">
+    <div class="test-list">
+      <mat-card class="test" *ngFor="let test of tests">
+        <mat-card-header class="test-header">
+          <mat-card-title class="test-name">{{test.name}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-actions class="test-actions" align="end">
+          <button mat-raised-button color="primary" (click)="onStartClick(test)">Start</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,37 @@
+<div class="header">
+  <div class="wrapper">
+    <div class="logo" routerLink="/">
+      <img src="assets/logo.png" alt="logo">
+      <span>Quiz</span>
+    </div>
+
+    <div class="menu">
+      <nav class="navigation">
+        <ul class="nav-links">
+          <li *ngIf="isLoggedIn | async">
+            <a routerLink="/tests" routerLinkActive="active-link">
+              Tests
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div *ngIf="!(isLoggedIn | async)" class="right-section unauthorized-section">
+      <button mat-stroked-button (click)="signIn()">Sign In</button>
+      <button mat-raised-button color="accent" (click)="signUp()">Sign Up</button>
+    </div>
+
+    <div *ngIf="isLoggedIn | async" class="right-section authorized-section" [matMenuTriggerFor]="menu">
+      <span class="user-name">{{fullUserName}}</span>
+      <img class="user-avatar" src="assets/user-icon.png" alt="user-icon">
+
+      <mat-menu class="user-menu" backdropClass="custom" #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="signOut()">
+          <mat-icon fontSet="material-icons-outlined">logout</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</div>

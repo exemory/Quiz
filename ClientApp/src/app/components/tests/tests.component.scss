@@ -1,0 +1,25 @@
+.wrapper {
+  max-width: 1400px;
+  margin: auto;
+  padding: 0 16px;
+}
+
+.test-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.test {
+  .test-header {
+    padding: 12px 12px 0;
+
+    .test-name {
+      font-size: 18px;
+    }
+  }
+
+  .test-actions {
+    margin-top: auto;
+  }
+}
