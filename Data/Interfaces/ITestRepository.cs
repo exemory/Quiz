@@ -7,4 +7,5 @@ namespace Data.Interfaces;
 /// </summary>
 public interface ITestRepository : IRepository<Test>
 {
+    public Task<IEnumerable<Test>> GetAllowedTestsForUserAsync(Guid userId);
 }

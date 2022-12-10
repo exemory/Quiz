@@ -14,6 +14,7 @@ public class QuestionRepository : Repository<Question>, IQuestionRepository
     public async Task<ICollection<Question>> GetAllByTestIdAsync(Guid testId)
     {
         return await Entities.Include(q => q.Answers)
+            .Where(q => q.TestId == testId)
             .AsNoTracking()
             .ToListAsync();
     }

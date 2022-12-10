@@ -38,16 +38,21 @@ public class TestsController : ControllerBase
     }
 
     /// <summary>
-    /// Finish the test and get the results
+    /// Finish the test and get the result
     /// </summary>
     /// <returns>Test result</returns>
     /// <response code="200">Returns the test result</response>
-    /// <response code="404">One of the questions does not exist in the specified test</response>
+    /// <response code="404">
+    /// The test specified by <paramref name="testId"/> not found /
+    /// The question does not exist in the test /
+    /// The answer does not exist in the question
+    /// </response>
     [HttpPost("{testId:guid}/result")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<TestResultsDto>> CompleteTest(Guid testId, CompletedTestDto completedTestDto)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TestResultDto>> CompleteTest(Guid testId, CompletedTestDto completedTestDto)
     {
-        var result = await _testService.GetTestResults(testId, completedTestDto);
+        var result = await _testService.GetTestResultAsync(testId, completedTestDto);
         return Ok(result);
     }
 }

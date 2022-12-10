@@ -15,13 +15,18 @@ public interface ITestService
     public Task<IEnumerable<TestDto>> GetAllAsync();
 
     /// <summary>
-    /// Get results of the completed test
+    /// Get result of the completed test
     /// </summary>
     /// <param name="testId">Guid of the completed test</param>
     /// <param name="completedTestDto">Completed test data</param>
-    /// <returns>Test results mapped into <see cref="TestResultsDto"/></returns>
+    /// <returns>Test result mapped into <see cref="TestResultDto"/></returns>
     /// <exception cref="NotFoundException">
-    /// Thrown when one of the questions does not exist in test specified by <paramref name="testId"/>
+    /// Thrown when:
+    /// <list type="bullet">
+    /// <item><description>The test specified by <paramref name="testId"/> does not exist</description></item>
+    /// <item><description>The question does not exist in the test</description></item>
+    /// <item><description>The answer does not exist in the question</description></item>
+    /// </list>
     /// </exception>
-    public Task<TestResultsDto> GetTestResults(Guid testId, CompletedTestDto completedTestDto);
+    public Task<TestResultDto> GetTestResultAsync(Guid testId, CompletedTestDto completedTestDto);
 }

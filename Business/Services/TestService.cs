@@ -12,41 +12,54 @@ public class TestService : ITestService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ISession _session;
 
-    public TestService(IUnitOfWork unitOfWork, IMapper mapper)
+    public TestService(IUnitOfWork unitOfWork, IMapper mapper, ISession session)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _session = session;
     }
 
     public async Task<IEnumerable<TestDto>> GetAllAsync()
     {
-        var tests = await _unitOfWork.TestRepository.GetAllAsync();
+        var tests = await _unitOfWork.TestRepository.GetAllowedTestsForUserAsync(_session.UserId!.Value);
         return _mapper.Map<IEnumerable<TestDto>>(tests);
     }
 
-    public async Task<TestResultsDto> GetTestResults(Guid testId, CompletedTestDto completedTestDto)
+    public async Task<TestResultDto> GetTestResultAsync(Guid testId, CompletedTestDto completedTestDto)
     {
+        await CheckIfTestExistsAsync(testId);
+
         var questions = await _unitOfWork.QuestionRepository.GetAllByTestIdAsync(testId);
 
-        var correctAnswersCount = CorrectAnswersCount(testId, completedTestDto, questions);
-        var mark = questions.Count != 0 ? (float) correctAnswersCount / questions.Count : 0;
+        var correctAnswersCount = CalculateCorrectAnswersCount(testId, completedTestDto, questions);
 
-        return new TestResultsDto
+        return new TestResultDto
         {
             QuestionsCount = questions.Count,
-            CorrectAnswersCount = correctAnswersCount,
-            Mark = mark
+            CorrectAnswersCount = correctAnswersCount
         };
     }
 
-    private static int CorrectAnswersCount(Guid testId, CompletedTestDto completedTestDto, ICollection<Question> questions)
+    private async Task CheckIfTestExistsAsync(Guid testId)
+    {
+        var test = await _unitOfWork.TestRepository.GetByIdAsync(testId);
+
+        if (test == null)
+        {
+            throw new NotFoundException($"Test with id '{testId}' not found");
+        }
+    }
+
+    private static int CalculateCorrectAnswersCount(Guid testId, CompletedTestDto completedTestDto,
+        ICollection<Question> testQuestions)
     {
         var correctAnswersCount = 0;
-        
+
         foreach (var completedQuestion in completedTestDto.CompletedQuestions)
         {
-            var question = questions.FirstOrDefault(q => q.Id == completedQuestion.QuestionId);
+            var question = testQuestions.FirstOrDefault(q => q.Id == completedQuestion.QuestionId);
 
             if (question == null)
             {
@@ -54,9 +67,15 @@ public class TestService : ITestService
                     $"Question with id '{completedQuestion.QuestionId}' not found in test with id '{testId}'");
             }
 
-            var correctAnswer = question.Answers.FirstOrDefault(a => a.IsCorrect);
+            var answer = question.Answers.FirstOrDefault(a => a.Id == completedQuestion.SelectedAnswerId);
 
-            if (correctAnswer?.Id == completedQuestion.SelectedAnswerId)
+            if (answer == null)
+            {
+                throw new NotFoundException(
+                    $"Answer with id '{completedQuestion.SelectedAnswerId}' not found in question with id '{question.Id}'");
+            }
+
+            if (answer.IsCorrect)
             {
                 correctAnswersCount++;
             }

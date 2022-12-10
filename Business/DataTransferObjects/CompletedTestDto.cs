@@ -2,5 +2,5 @@
 
 public class CompletedTestDto
 {
-    public IEnumerable<CompletedQuestion> CompletedQuestions { get; set; } = new List<CompletedQuestion>();
+    public IEnumerable<CompletedQuestionDto> CompletedQuestions { get; set; } = new List<CompletedQuestionDto>();
 }

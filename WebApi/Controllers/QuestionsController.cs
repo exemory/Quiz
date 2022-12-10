@@ -27,8 +27,10 @@ public class QuestionsController : ControllerBase
     /// <param name="testId">Guid of the test which questions need to be retrieved</param>
     /// <returns>Array of test's questions</returns>
     /// <response code="200">Returns the array of test's questions</response>
+    /// <response code="404">The test not found</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<QuestionDto>>> GetAllByTestId(Guid testId)
     {
         var result = await _questionService.GetAllByTestIdAsync(testId);

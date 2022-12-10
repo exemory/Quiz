@@ -25,8 +25,7 @@ public static class ServiceCollectionExtensions
 
         services.AddControllers(o =>
         {
-            o.Filters.Add<SessionFilter>(); 
-            
+            o.Filters.Add<SessionFilter>();
         });
 
         services.AddIdentityCore<User>(options =>
