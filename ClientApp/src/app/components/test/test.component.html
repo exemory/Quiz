@@ -1,0 +1,62 @@
+<div class="wrapper">
+  <div *ngIf="loading && !loadingError" class="loading-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!loading && !loadingError">
+    <ng-container *ngIf="!isTestEmpty else emptyTestTemplate">
+      <ng-container *ngIf="!testResult else testResultTemplate">
+        <h2 class="question">{{currentQuestionIndex + 1}}. {{currentQuestion.content}}</h2>
+
+        <mat-radio-group class="answer-group" (change)="onAnswerChange($event)">
+          <mat-radio-button [checked]="isAnswerChecked(answer)" class="answer"
+                            *ngFor="let answer of currentQuestion.answers"
+                            [value]="answer">{{answer.content}}</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="actions">
+          <button [disabled]="isMoveToPrevDisabled" mat-icon-button color="primary"
+                  (click)="onPrevClick()">
+            <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+          </button>
+          <button [disabled]="isMoveToNextDisabled" mat-icon-button color="primary"
+                  (click)="onNextClick()">
+            <mat-icon fontSet="material-icons-outlined">arrow_forward</mat-icon>
+          </button>
+          <button class="get-result-button" [disabled]="!isAllQuestionsCompleted" mat-raised-button color="accent"
+                  (click)="getTestResult()">Finish
+          </button>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #testResultTemplate>
+  <div class="completed-test-caption">
+    <img class="icon" src="assets/completed-test.png" alt="test completed">
+    <h2 class="caption">Test is completed</h2>
+  </div>
+
+  <div class="test-result">
+    <p>
+      <span class="bold">{{testResult!.correctAnswersCount}}</span> correct answer<span
+      *ngIf="testResult!.correctAnswersCount > 1">s</span> out of
+      <span class="bold">{{testResult!.questionsCount}}</span>
+      (<span class="bold">{{testResult!.correctAnswersCount / testResult!.questionsCount | percent}}</span>)
+    </p>
+  </div>
+
+  <button mat-raised-button color="primary" routerLink="../">
+    <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+    Back
+  </button>
+</ng-template>
+
+<ng-template #emptyTestTemplate>
+  <h2 class="test-has-no-questions-caption">The test has no questions yet</h2>
+  <button mat-raised-button color="primary" routerLink="../">
+    <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+    Back
+  </button>
+</ng-template>

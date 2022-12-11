@@ -18,7 +18,7 @@ export class StartTestDialog {
   }
 
   onProceedClick() {
-    this.router.navigate([this.test.id]);
+    this.router.navigate(['tests', this.test.id]);
     this.dialogRef.close();
   }
 }

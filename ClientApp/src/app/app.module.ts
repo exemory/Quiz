@@ -22,6 +22,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatCardModule} from "@angular/material/card";
 import {StartTestDialog} from './components/start-test-dialog/start-test-dialog.component';
+import { TestComponent } from './components/test/test.component';
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   declarations: [
@@ -32,24 +34,26 @@ import {StartTestDialog} from './components/start-test-dialog/start-test-dialog.
     TestsComponent,
     HeaderComponent,
     StartTestDialog,
+    TestComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    MatCardModule,
-    FormsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatIconModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        MatButtonModule,
+        HttpClientModule,
+        MatMenuModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+        FormsModule,
+        MatRadioModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true},
   ],
